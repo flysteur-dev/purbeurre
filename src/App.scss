@@ -1,0 +1,68 @@
+.App {
+
+	.Search {
+
+		padding:10px;
+
+		input {
+			height:50px;
+			width:100%;
+			border:1px solid gray;
+			border-radius: 5px;
+		}
+
+		.Suggests {
+			margin:0px;
+			padding:0px;
+			list-style-type: none;
+			border:1px solid gray;
+
+			li {
+				padding:5px;
+				background-color:ghostwhite;
+				border-top:1px solid gray;
+			}
+		}
+	}
+
+	.Filter {
+		list-style-type: none;
+		padding:10px;
+		margin:10px;
+
+		li {
+			display: inline-block;
+			padding:5px;
+			margin-right: 10px;
+			min-width: 100px;
+
+			border-radius: 40px;
+			background-color:lightcoral;
+			border:1px solid red;
+
+			&:before {
+				content: 'x';
+				color:black;
+				font-weight: 300;
+				margin-right:10px;
+			}
+		}
+	}
+
+	.Results {
+		list-style-type: none;
+		padding:0px;
+		margin:0px;
+
+		li {
+			min-height: 100px;
+			background-color:rgba(32, 178, 171, 0.39);
+			border-bottom: 1px solid darkcyan;
+
+			.t {
+				font-weight: bold;
+				margin-bottom: 5px;
+			}
+		}
+	}
+}
