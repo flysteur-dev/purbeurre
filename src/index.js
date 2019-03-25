@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { ApolloProvider, Query } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { persistCache } from 'apollo-cache-persist';
 import gql from 'graphql-tag';
 
 //Style
@@ -16,6 +17,35 @@ import Recipe from './Recipe';
 import * as serviceWorker from './serviceWorker';
 
 const cache  = new InMemoryCache();
+persistCache({ cache, storage: window.localStorage }).then(() => {
+	//Initialize state
+	if (!window.localStorage.getItem('apollo-cache-persist')) {
+		console.warn("Cache is empty, applying initial state.");
+		//Sample
+		cache.writeData({
+			data: {
+				//List of all available ingredients
+				ingredientsBase: [
+					{ __typename: 'ingredient', id: 1, name: "avocat" },
+					{ __typename: 'ingredient', id: 2, name: "abricot" },
+					{ __typename: 'ingredient', id: 3, name: "lait" },
+					{ __typename: 'ingredient', id: 4, name: "tomate" },
+					{ __typename: 'ingredient', id: 5, name: "chocolat" },
+					{ __typename: 'ingredient', id: 6, name: "mandarine" },
+					{ __typename: 'ingredient', id: 7, name: "crevette" },
+				],
+				//List of all available recipes
+				cookbook: [
+					{ __typename: 'recipe', id: 1, title: "recette 1", desc: "(avocat, lait)", ingredients: [1, 3] },
+					{ __typename: 'recipe', id: 2, title: "recette 2", desc: "(tomate)", ingredients: [4]    },
+					{ __typename: 'recipe', id: 3, title: "recette 3", desc: "(avocat, tomate)", ingredients: [1, 4] },
+					{ __typename: 'recipe', id: 4, title: "recette 4", desc: "(crevette, avocat)", ingredients: [7, 1] },
+				]
+			}
+		});
+	}
+});
+
 const client = new ApolloClient({
 	cache,
 	resolvers: {
@@ -24,29 +54,6 @@ const client = new ApolloClient({
 				return cache.data.get(`ingredientsBase:${id}`);
 			}
 		}
-	}
-});
-
-//Sample
-cache.writeData({
-	data: {
-		//List of all available ingredients
-		ingredientsBase: [
-			{ __typename: 'ingredient', id: 1, name: "avocat" },
-			{ __typename: 'ingredient', id: 2, name: "abricot" },
-			{ __typename: 'ingredient', id: 3, name: "lait" },
-			{ __typename: 'ingredient', id: 4, name: "tomate" },
-			{ __typename: 'ingredient', id: 5, name: "chocolat" },
-			{ __typename: 'ingredient', id: 6, name: "mandarine" },
-			{ __typename: 'ingredient', id: 7, name: "crevette" },
-		],
-		//List of all available recipes
-		cookbook: [
-			{ __typename: 'recipe', id: 1, title: "recette 1", desc: "(avocat, lait)", ingredients: [1, 3] },
-			{ __typename: 'recipe', id: 2, title: "recette 2", desc: "(tomate)", ingredients: [4]    },
-			{ __typename: 'recipe', id: 3, title: "recette 3", desc: "(avocat, tomate)", ingredients: [1, 4] },
-			{ __typename: 'recipe', id: 4, title: "recette 4", desc: "(crevette, avocat)", ingredients: [7, 1] },
-		]
 	}
 });
 
