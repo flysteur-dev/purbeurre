@@ -10,7 +10,7 @@ class Filter extends Component {
 
 	filters = (props) => {
 		return props.filters.map((filter) => {
-			return <li key={filter} onClick={() => this.remove(filter)}>{filter}</li>
+			return <li key={`f_${filter.id}`} onClick={() => this.remove(filter)}>{filter.name}</li>
 		})
 	}
 

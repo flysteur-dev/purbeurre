@@ -26,7 +26,7 @@ class Search extends Component {
 
 			//Suggestion based on available app ingredients
 			suggests: _.filter(this.props.ingredients, (ingredient) => {
-				return _.startsWith(ingredient, event.target.value)
+				return _.startsWith(ingredient.name, event.target.value);
 			})
 		});
 	}
@@ -45,7 +45,7 @@ class Search extends Component {
 
 	render() {
 		const suggests = this.state.suggests.map((suggest) => {
-			return <li key={suggest} onClick={() => this.addToFilter(suggest)}>{suggest}</li>
+			return <li key={`s_${suggest.id}`} onClick={() => this.addToFilter(suggest)}>{suggest.name}</li>
 		});
 
 		return (

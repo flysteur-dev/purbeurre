@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
 import '../App.scss';
 
@@ -7,10 +8,12 @@ class Results extends Component {
 	listItems = (props) => {
 		return props.items.map((item) => {
 			return (
-				<li key={item.title}>
-					<div className="t">{item.title}</div>
-					<div className="i">({item.ingredients.join(', ')})</div>
-				</li>
+				<Link key={`r_${item.title}`} to="/recipe">
+					<li>
+						<div className="t">{item.title}</div>
+						<div className="i">{item.desc}</div>
+					</li>
+				</Link>
 			)
 		})
 	};

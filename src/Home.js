@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 //Styles
 import './App.scss';
@@ -9,32 +11,24 @@ import Search  from './components/Search';
 import Filter  from './components/Filter';
 import Results from './components/Results';
 
-class App extends Component {
+//Query
+const GET_BASE_INGREDIENTS = gql`
+  query {
+	  ingredientsBase @client {
+      id,
+      name
+    }
+  }
+`;
+
+class Home extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      //List of all available ingredients
-      ingredientsBase: ["avocat", "abricot", "lait", "tomate", "chocolat", "mandarine", "crevette"],
-
-      //List of all available recipes
-      cookbook: [{
-          title: "recette 1",
-          ingredients: ["avocat", "lait"]
-        }, {
-          title: "recette 2",
-          ingredients: ["tomate"]
-        }, {
-          title: "recette 3",
-          ingredients: ["avocat", "tomate"]
-        }, {
-          title: "recette 4",
-          ingredients: ["crevette", "avocat"]
-        }
-      ],
-
+      cookbook: this.props.cookbook,
+      cookbookFiltered: [],
       filter: [],
-      cookbookFiltered: []
     };
   }
 
@@ -56,7 +50,7 @@ class App extends Component {
     //Filter recipes with selected ingredients
     this.setState({
       cookbookFiltered: _.filter(this.state.cookbook, (recipe) => {
-        return _.difference(this.state.filter, recipe.ingredients).length === 0
+        return _.difference(_.map(this.state.filter, 'id'), recipe.ingredients).length === 0
       })
     })
   }
@@ -64,7 +58,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Search filterByIngredient={this.addFilter} ingredients={this.state.ingredientsBase} />
+        <Query query={GET_BASE_INGREDIENTS}>
+          {({ data, loading, error }) => {
+            return (
+              <Search filterByIngredient={this.addFilter} ingredients={data.ingredientsBase} />
+            )
+          }}
+        </Query>
         <hr />
         <Filter removeFilter={this.removeFilter} filters={this.state.filter} />
         <hr />
@@ -74,4 +74,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Home;

@@ -8,11 +8,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
-hr {
-  margin:0px;
-}
+a    { text-decoration: none; color:black;}
+code { font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace; }
+hr   { margin:0px; }
