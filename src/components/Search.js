@@ -15,19 +15,14 @@ class Search extends Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	//Force autofocus after component update
-	componentDidUpdate() {
-		this._input.focus();
-	}
-
 	handleChange = (event) => {
 		this.setState({
 			value: event.target.value,
 
 			//Suggestion based on available app ingredients
-			suggests: _.filter(this.props.ingredients, (ingredient) => {
+			suggests: _.slice(_.filter(this.props.ingredients, (ingredient) => {
 				return _.startsWith(ingredient.name, event.target.value);
-			})
+			}), 0, 4)
 		});
 	}
 
@@ -41,6 +36,9 @@ class Search extends Component {
 	addToFilter = (suggest) => {
 		this.props.filterByIngredient(suggest);
 		this.clear();
+
+		//Force autofocus after component update
+		this._input.focus();
 	}
 
 	render() {

@@ -28,7 +28,7 @@ class Home extends Component {
     super(props);
     this.state = {
       cookbook: this.props.cookbook,
-      cookbookFiltered: [],
+      cookbookFiltered: this.props.cookbook,
       filter: [],
     };
   }

@@ -39,21 +39,16 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 			data: {
 				//List of all available ingredients
 				ingredientsBase: [
-					{ __typename: 'ingredient', id: 1, name: "avocat" },
-					{ __typename: 'ingredient', id: 2, name: "abricot" },
-					{ __typename: 'ingredient', id: 3, name: "lait" },
-					{ __typename: 'ingredient', id: 4, name: "tomate" },
-					{ __typename: 'ingredient', id: 5, name: "chocolat" },
-					{ __typename: 'ingredient', id: 6, name: "mandarine" },
-					{ __typename: 'ingredient', id: 7, name: "crevette" },
+					{ __typename: 'Ingredient', id: 1, name: "avocat" },
+					{ __typename: 'Ingredient', id: 2, name: "abricot" },
+					{ __typename: 'Ingredient', id: 3, name: "lait" },
+					{ __typename: 'Ingredient', id: 4, name: "tomate" },
+					{ __typename: 'Ingredient', id: 5, name: "chocolat" },
+					{ __typename: 'Ingredient', id: 6, name: "mandarine" },
+					{ __typename: 'Ingredient', id: 7, name: "crevette" },
 				],
 				//List of all available recipes
-				cookbook: [
-					{ __typename: 'recipe', id: 1, title: "recette 1", desc: "(avocat, lait)", ingredients: [1, 3] },
-					{ __typename: 'recipe', id: 2, title: "recette 2", desc: "(tomate)", ingredients: [4]    },
-					{ __typename: 'recipe', id: 3, title: "recette 3", desc: "(avocat, tomate)", ingredients: [1, 4] },
-					{ __typename: 'recipe', id: 4, title: "recette 4", desc: "(crevette, avocat)", ingredients: [7, 1] },
-				]
+				cookbook: [ ]
 			}
 		});
 	}
@@ -62,14 +57,20 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 		cache,
 		resolvers: {
 			Query: {
-				getRecipeById(_, { id }, { cache }) {
-					return cache.data.get(`recipe:${id}`);
+				getRecipe: (_, { id }, { cache }) => {
+					const { cookbook } = cache.readQuery({ query: GET_BASE_COOKBOOK });
+					return cookbook.filter(recipe => recipe.id == id)[0];
 				}
 			},
 			Mutation: {
-				addRecipe(__, { title, desc }, { cache }) {
+				addRecipe(__, { title, desc, ingredients }, { cache }) {
 					const previous  = cache.readQuery({ query: GET_BASE_COOKBOOK });
-					const newRecipe = { __typename: 'recipe', id: _.maxBy(previous.cookbook, 'id').id + 1, title, desc, ingredients: [4] };
+					const newRecipe = {
+						__typename: 'Recipe',
+						id: (previous.cookbook.length) ? _.maxBy(previous.cookbook, 'id').id + 1 : 1,
+						title, desc,
+						ingredients: _.map(ingredients, 'id')
+					};
 					const data = {
 						cookbook: [...previous.cookbook, newRecipe],
 					};
