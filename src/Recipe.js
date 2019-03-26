@@ -69,6 +69,10 @@ class Recipe extends Component {
 		}));
 	}
 
+	redirectToHome = () => {
+		this.props.history.push(`/`);
+	}
+
 	render() {
 		let ingredients = this.state.ingredients.map((ingredient) => {
 			return (
@@ -136,7 +140,8 @@ class Recipe extends Component {
 				{ this.state.id ? (
 					<Mutation
 						mutation={DELETE_RECIPE}
-						variables={{ id: this.state.id }}>
+						variables={{ id: this.state.id }}
+						onCompleted={() => this.redirectToHome() }>
 							{deleteRecipe => (
 								<button onClick={deleteRecipe}>Delete</button>
 							)}
@@ -144,7 +149,8 @@ class Recipe extends Component {
 				) : (
 					<Mutation
 						mutation={ADD_RECIPE}
-						variables={this.state}>
+						variables={this.state}
+						onCompleted={() => this.redirectToHome() }>
 							{addRecipe => (
 								<button onClick={addRecipe}>Add</button>
 							)}
