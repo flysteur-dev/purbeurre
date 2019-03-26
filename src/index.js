@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import _ from 'lodash';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { ApolloProvider, Query } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
@@ -15,6 +16,18 @@ import Home from './Home';
 import Recipe from './Recipe';
 
 import * as serviceWorker from './serviceWorker';
+
+//Query
+const GET_BASE_COOKBOOK = gql`
+  query {
+	cookbook @client {
+		id,
+		title,
+		desc,
+		ingredients
+	}
+  }
+`;
 
 const cache  = new InMemoryCache();
 persistCache({ cache, storage: window.localStorage }).then(() => {
@@ -44,52 +57,59 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 			}
 		});
 	}
-});
 
-const client = new ApolloClient({
-	cache,
-	resolvers: {
-		Query: {
-			getIngredientsById(_, { id }, { cache }) {
-				return cache.data.get(`ingredientsBase:${id}`);
+	const client = new ApolloClient({
+		cache,
+		resolvers: {
+			Query: {
+				getRecipeById(_, { id }, { cache }) {
+					return cache.data.get(`recipe:${id}`);
+				}
+			},
+			Mutation: {
+				addRecipe(__, { title, desc }, { cache }) {
+					const previous  = cache.readQuery({ query: GET_BASE_COOKBOOK });
+					const newRecipe = { __typename: 'recipe', id: _.maxBy(previous.cookbook, 'id').id + 1, title, desc, ingredients: [4] };
+					const data = {
+						cookbook: [...previous.cookbook, newRecipe],
+					};
+					cache.writeData({data});
+					return newRecipe;
+				},
+				deleteRecipe(_, { id }, { cache }) {
+					const previous = cache.readQuery({ query: GET_BASE_COOKBOOK });
+					const data = {
+						cookbook: previous.cookbook.filter(i => i.id != id)
+					}
+					cache.writeData({data});
+					return true;
+				}
 			}
 		}
-	}
+	});
+
+	ReactDOM.render(
+		<ApolloProvider client={client}>
+			<Query query={GET_BASE_COOKBOOK}>
+				{({ data, loading, error }) => {
+					if (loading) return <span>loading...</span>
+					if (error)   return <span>Oops..</span>
+
+					return (
+						<Router>
+							<div>
+								<Route exact path="/" render={(props) => <Home {...props} cookbook={data.cookbook} />} />
+								<Route exact path="/add" component={Recipe} />
+								<Route exact path="/recipe/:id" component={Recipe} />
+							</div>
+						</Router>
+					)
+				}}
+			</Query>
+		</ApolloProvider>,
+		document.getElementById('root')
+	);
 });
-
-//Query
-const GET_BASE_COOKBOOK = gql`
-  query {
-    cookbook @client {
-		id,
-		title,
-		desc,
-		ingredients
-    }
-  }
-`;
-
-ReactDOM.render(
-	<ApolloProvider client={client}>
-		<Query query={GET_BASE_COOKBOOK}>
-			{({ data, loading, error }) => {
-				if (loading) return <span>loading...</span>
-				if (error)   return <span>Oops..</span>
-
-				return (
-					<Router>
-						<div>
-							<Route exact path="/" render={(props) => <Home {...props} cookbook={data.cookbook} />} />
-							<Route exact path="/recipe" component={Recipe} />
-							<Route exact path="/recipe/:id" component={Recipe} />
-						</div>
-					</Router>
-				)
-			}}
-		</Query>
-	</ApolloProvider>,
-	document.getElementById('root')
-);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

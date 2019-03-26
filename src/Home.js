@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { Link } from "react-router-dom";
 
 //Styles
 import './App.scss';
@@ -69,6 +70,8 @@ class Home extends Component {
         <Filter removeFilter={this.removeFilter} filters={this.state.filter} />
         <hr />
         <Results items={this.state.cookbookFiltered} />
+
+        <div className="AddButton"><Link to="/add">+</Link></div>
       </div>
     );
   }
