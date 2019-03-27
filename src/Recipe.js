@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Query, Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 
 //Components
 import Search from './components/Search';
@@ -9,26 +8,9 @@ import Search from './components/Search';
 //Styles
 import './App.scss';
 
-//Query
-const GET_BASE_INGREDIENTS = gql`
-	query {
-		ingredientsBase @client {
-			id,
-			name
-		}
-	}
-`;
-
-const ADD_RECIPE = gql`
-	mutation addRecipe($title: String!, $desc: String!, $ingredients: [Int]) {
-		addRecipe(title: $title, desc: $desc, ingredients: $ingredients) @client
-	}
-`;
-const DELETE_RECIPE = gql`
-	mutation deleteRecipe($id: ID!) {
-		deleteRecipe(id: $id) @client
-	}
-`;
+//Queries
+import { GET_INGREDIENTS } from './clients/Ingredient';
+import { ADD_RECIPE, DELETE_RECIPE } from './clients/Recipe';
 
 class Recipe extends Component {
 
@@ -104,7 +86,7 @@ class Recipe extends Component {
 						onChange={this.handleInputQuantityChange}
 						value={ingredient.qtx} />
 
-					{!this.state.id ? (<label onClick={() => this.handleInputDeletion(row)}>[x]</label>) : null }
+					{!this.state.id ? (<label onClick={() => this.handleInputDeletion(row)}>&times;</label>) : null }
 					<br />
 				</div>
 			)
@@ -113,7 +95,7 @@ class Recipe extends Component {
 
 		return (
 			<div className="App Recipe">
-				<Link to="/"><div>[close]</div></Link>
+				<Link to="/"><div className="close">&times;</div></Link>
 
 				<form>
 					<label>Title
@@ -133,11 +115,11 @@ class Recipe extends Component {
 					</label><br />
 
 					<label>Ingredients</label>
-					<Query query={GET_BASE_INGREDIENTS}>
-						{({ data, loading, error }) => {
+					<Query query={GET_INGREDIENTS}>
+						{({ data }) => {
 							return (
 								<div>
-									<Search filterByIngredient={this.addIngredient} ingredients={data.ingredientsBase} />
+									<Search filterByIngredient={this.addIngredient} ingredients={data.ingredients} />
 									{ingredients}
 								</div>
 							)

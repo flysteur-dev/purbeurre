@@ -1,12 +1,13 @@
+import { merge } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import _ from 'lodash';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { ApolloProvider, Query } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { persistCache } from 'apollo-cache-persist';
-import gql from 'graphql-tag';
+
+import * as serviceWorker from './serviceWorker';
 
 //Style
 import './index.scss';
@@ -15,38 +16,12 @@ import './index.scss';
 import Home from './Home';
 import Recipe from './Recipe';
 
-import * as serviceWorker from './serviceWorker';
+//Queries
+import { GET_RECIPES, GET_RECIPE } from './clients/Recipe';
 
-//Query
-const GET_BASE_COOKBOOK = gql`
-  query {
-	cookbook @client {
-		id,
-		title,
-		desc,
-		ingredients {
-			idIngredient,
-			name,
-			qtx,
-		}
-	}
-  }
-`;
-
-const GET_RECIPE = gql`
-	query {
-		getRecipe(id: $id) @client {
-			id,
-			title,
-			desc,
-			ingredients {
-				idIngredient,
-				name,
-				qtx,
-			}
-		}
-	}
-`;
+//Resolvers
+import { resolvers as ingredientResolvers } from './clients/Ingredient';
+import { resolvers as recipeResolvers } from './clients/Recipe';
 
 const cache  = new InMemoryCache();
 persistCache({ cache, storage: window.localStorage }).then(() => {
@@ -57,7 +32,7 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 		cache.writeData({
 			data: {
 				//List of all available ingredients
-				ingredientsBase: [
+				ingredients: [
 					{ __typename: 'Ingredient', id: 1, name: "avocat" },
 					{ __typename: 'Ingredient', id: 2, name: "abricot" },
 					{ __typename: 'Ingredient', id: 3, name: "lait" },
@@ -74,44 +49,15 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 
 	const client = new ApolloClient({
 		cache,
-		resolvers: {
-			Query: {
-				getRecipe: (_, { id }, { cache }) => {
-					const { cookbook } = cache.readQuery({ query: GET_BASE_COOKBOOK });
-					return cookbook.filter(recipe => recipe.id == id)[0];
-				}
-			},
-			Mutation: {
-				addRecipe(__, { title, desc, ingredients }, { cache }) {
-					const previous  = cache.readQuery({ query: GET_BASE_COOKBOOK });
-					const newRecipe = {
-						__typename: 'Recipe',
-						id: (previous.cookbook.length) ? _.maxBy(previous.cookbook, 'id').id + 1 : 1,
-						title,
-						desc,
-						ingredients
-					};
-					const data = {
-						cookbook: [...previous.cookbook, newRecipe],
-					};
-					cache.writeData({data});
-					return newRecipe;
-				},
-				deleteRecipe(_, { id }, { cache }) {
-					const previous = cache.readQuery({ query: GET_BASE_COOKBOOK });
-					const data = {
-						cookbook: previous.cookbook.filter(i => i.id != id)
-					}
-					cache.writeData({data});
-					return true;
-				}
-			}
-		}
+		resolvers: merge(
+			ingredientResolvers,
+			recipeResolvers,
+		)
 	});
 
 	ReactDOM.render(
 		<ApolloProvider client={client}>
-			<Query query={GET_BASE_COOKBOOK}>
+			<Query query={GET_RECIPES}>
 				{({ loading, error, data }) => {
 					if (loading) return <span>loading...</span>
 					if (error)   return <span>Oops..</span>

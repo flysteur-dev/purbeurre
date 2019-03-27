@@ -19,10 +19,10 @@ class Search extends Component {
 		this.setState({
 			value: event.target.value,
 
-			//Suggestion based on available app ingredients
+			//Suggestion based on available app ingredients (5 items maximum)
 			suggests: _.slice(_.filter(this.props.ingredients, (ingredient) => {
 				return _.startsWith(ingredient.name, event.target.value);
-			}), 0, 4)
+			}), 0, 5)
 		});
 	}
 

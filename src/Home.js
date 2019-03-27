@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
 import _ from 'lodash';
-import gql from 'graphql-tag';
+import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import { Link } from "react-router-dom";
 
@@ -12,15 +11,8 @@ import Search  from './components/Search';
 import Filter  from './components/Filter';
 import Results from './components/Results';
 
-//Query
-const GET_BASE_INGREDIENTS = gql`
-  query {
-	  ingredientsBase @client {
-      id,
-      name
-    }
-  }
-`;
+//Queries
+import { GET_INGREDIENTS } from './clients/Ingredient';
 
 class Home extends Component {
 
@@ -59,10 +51,10 @@ class Home extends Component {
   render() {
     return (
       <div className="App">
-        <Query query={GET_BASE_INGREDIENTS}>
-          {({ data, loading, error }) => {
+        <Query query={GET_INGREDIENTS}>
+          {({ data }) => {
             return (
-              <Search filterByIngredient={this.addFilter} ingredients={data.ingredientsBase} />
+              <Search filterByIngredient={this.addFilter} ingredients={data.ingredients} />
             )
           }}
         </Query>
