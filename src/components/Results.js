@@ -8,7 +8,7 @@ class Results extends Component {
 	listItems = (props) => {
 		return props.items.map((item) => {
 			return (
-				<Link key={`r_${item.title}`} to={`/recipe/${item.id}`}>
+				<Link key={`r_${item.id}`} to={`/recipe/${item.id}`}>
 					<li>
 						<div className="t">{item.title}</div>
 						<div className="i">{item.desc}</div>

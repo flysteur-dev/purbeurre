@@ -51,7 +51,7 @@ class Home extends Component {
     //Filter recipes with selected ingredients
     this.setState({
       cookbookFiltered: _.filter(this.state.cookbook, (recipe) => {
-        return _.difference(_.map(this.state.filter, 'id'), recipe.ingredients).length === 0
+        return _.difference(_.map(this.state.filter, 'id'), _.map(recipe.ingredients, 'idIngredient')).length === 0
       })
     })
   }

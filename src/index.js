@@ -24,9 +24,28 @@ const GET_BASE_COOKBOOK = gql`
 		id,
 		title,
 		desc,
-		ingredients
+		ingredients {
+			idIngredient,
+			name,
+			qtx,
+		}
 	}
   }
+`;
+
+const GET_RECIPE = gql`
+	query {
+		getRecipe(id: $id) @client {
+			id,
+			title,
+			desc,
+			ingredients {
+				idIngredient,
+				name,
+				qtx,
+			}
+		}
+	}
 `;
 
 const cache  = new InMemoryCache();
@@ -68,8 +87,9 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 					const newRecipe = {
 						__typename: 'Recipe',
 						id: (previous.cookbook.length) ? _.maxBy(previous.cookbook, 'id').id + 1 : 1,
-						title, desc,
-						ingredients: _.map(ingredients, 'id')
+						title,
+						desc,
+						ingredients
 					};
 					const data = {
 						cookbook: [...previous.cookbook, newRecipe],
@@ -92,7 +112,7 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 	ReactDOM.render(
 		<ApolloProvider client={client}>
 			<Query query={GET_BASE_COOKBOOK}>
-				{({ data, loading, error }) => {
+				{({ loading, error, data }) => {
 					if (loading) return <span>loading...</span>
 					if (error)   return <span>Oops..</span>
 
@@ -101,7 +121,16 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 							<div>
 								<Route exact path="/" render={(props) => <Home {...props} cookbook={data.cookbook} />} />
 								<Route exact path="/add" component={Recipe} />
-								<Route exact path="/recipe/:id" component={Recipe} />
+								<Route exact path="/recipe/:id" render={(r) =>
+									<Query query={GET_RECIPE} variables={{ id: r.match.params.id }}>
+										{({ loading, error, data: { getRecipe } }) => {
+											if (loading) return <span>loading...</span>
+											if (error)   return <span>Oops..</span>
+
+											return (<Recipe recipe={getRecipe} history={r.history} />);
+										}}
+									</Query>
+								 } />
 							</div>
 						</Router>
 					)

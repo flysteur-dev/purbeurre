@@ -11,23 +11,12 @@ import './App.scss';
 
 //Query
 const GET_BASE_INGREDIENTS = gql`
-  query {
-	  ingredientsBase @client {
-      id,
-      name
-    }
-  }
-`;
-
-const GET_RECIPE = gql`
-  query {
-	getRecipe(id: $id) @client {
-		id,
-		title,
-		desc,
-		ingredients
+	query {
+		ingredientsBase @client {
+			id,
+			name
+		}
 	}
-  }
 `;
 
 const ADD_RECIPE = gql`
@@ -45,12 +34,17 @@ class Recipe extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			id:    this.props.match.params.id || null,
-			title: '',
-			desc:  '',
-			ingredients: [],
-		};
+
+		if (this.props.recipe) {
+			this.state = { ...this.props.recipe };
+		} else {
+			this.state = {
+				id:    null,
+				title: '',
+				desc:  '',
+				ingredients: []
+			}
+		}
 	}
 
 	handleInputChange = (event) => {
@@ -63,9 +57,30 @@ class Recipe extends Component {
 		});
 	}
 
+	handleInputQuantityChange = (event) => {
+		let toUpdate = event.target.attributes['data-pos'].value;
+		let value    = event.target.value;
+		this.setState(prevState => {
+			prevState.ingredients[toUpdate].qtx = value;
+			return prevState;
+		});
+	}
+
+	handleInputDeletion = (row) => {
+		this.setState(prevState => {
+			prevState.ingredients.splice(row, 1);
+			return prevState;
+		});
+	}
+
 	addIngredient = (ingredient) => {
 		this.setState(prevState => ({
-			ingredients: [...prevState.ingredients, ingredient]
+			ingredients: [...prevState.ingredients, {
+				__typename: 'RecipeIngredient',
+				idIngredient: ingredient.id,
+				name: ingredient.name,
+				qtx: ''
+			}]
 		}));
 	}
 
@@ -74,17 +89,22 @@ class Recipe extends Component {
 	}
 
 	render() {
+		let n = 0;
 		let ingredients = this.state.ingredients.map((ingredient) => {
+			let row  = n; n++;
 			return (
-				<div className="row" key={ingredient.id}>
+				<div className="row" key={row}>
 					<input
 						disabled
-						name="ingredients[]"
 						type="text"
 						value={ingredient.name} />
 					<input
-						type="text" />
-					<label>[x]</label>
+						data-pos={row}
+						type="text"
+						onChange={this.handleInputQuantityChange}
+						value={ingredient.qtx} />
+
+					{!this.state.id ? (<label onClick={() => this.handleInputDeletion(row)}>[x]</label>) : null }
 					<br />
 				</div>
 			)
@@ -95,47 +115,35 @@ class Recipe extends Component {
 			<div className="App Recipe">
 				<Link to="/"><div>[close]</div></Link>
 
-				<Query query={GET_RECIPE} variables={{ id: this.state.id }}>
-					{({ data: { getRecipe }, loading, error }) => {
-						if (loading) return <span>loading...</span>
-						if (error)   return <span>Oops..</span>
+				<form>
+					<label>Title
+					<input
+						name="title"
+						type="text"
+						value={this.state.title}
+						onChange={this.handleInputChange} />
+					</label><br />
 
-						return (
-							<form>
-								<label>
-									Title
-								<input
-									name="title"
-									type="text"
-									value={getRecipe ? getRecipe.title : this.state.title}
-									onChange={this.handleInputChange} />
-								</label><br />
+					<label>Description
+					<input
+						name="desc"
+						type="text"
+						value={this.state.desc}
+						onChange={this.handleInputChange} />
+					</label><br />
 
-								<label>
-									Description
-								<input
-									name="desc"
-									type="text"
-									value={getRecipe ? getRecipe.desc : this.state.desc}
-									onChange={this.handleInputChange} />
-								</label><br />
-
-								<label>
-									Ingredients
-								</label>
-								<Query query={GET_BASE_INGREDIENTS}>
-									{({ data, loading, error }) => {
-										return (
-											<Search filterByIngredient={this.addIngredient} ingredients={data.ingredientsBase} />
-										)
-									}}
-								</Query>
-
-								{ingredients}
-							</form>
-						)
-					}}
-				</Query>
+					<label>Ingredients</label>
+					<Query query={GET_BASE_INGREDIENTS}>
+						{({ data, loading, error }) => {
+							return (
+								<div>
+									<Search filterByIngredient={this.addIngredient} ingredients={data.ingredientsBase} />
+									{ingredients}
+								</div>
+							)
+						}}
+					</Query>
+				</form>
 
 				{ this.state.id ? (
 					<Mutation
