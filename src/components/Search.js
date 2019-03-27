@@ -21,7 +21,7 @@ class Search extends Component {
 
 			//Suggestion based on available app ingredients (5 items maximum)
 			suggests: _.slice(_.filter(this.props.ingredients, (ingredient) => {
-				return _.startsWith(ingredient.name, event.target.value);
+				return _.startsWith(ingredient.name, _.lowerCase(event.target.value));
 			}), 0, 5)
 		});
 	}
