@@ -32,15 +32,7 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 		cache.writeData({
 			data: {
 				//List of all available ingredients
-				ingredients: [
-					{ __typename: 'Ingredient', id: 1, name: "avocat" },
-					{ __typename: 'Ingredient', id: 2, name: "abricot" },
-					{ __typename: 'Ingredient', id: 3, name: "lait" },
-					{ __typename: 'Ingredient', id: 4, name: "tomate" },
-					{ __typename: 'Ingredient', id: 5, name: "chocolat" },
-					{ __typename: 'Ingredient', id: 6, name: "mandarine" },
-					{ __typename: 'Ingredient', id: 7, name: "crevette" },
-				],
+				ingredients: [ ],
 				//List of all available recipes
 				cookbook: [ ]
 			}

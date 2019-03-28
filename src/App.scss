@@ -1,11 +1,5 @@
 .App {
 
-	&.Recipe {
-		.Search {
-			position:inherit;
-		}
-	}
-
 	.Search {
 		position:fixed;
 		width:100%;
@@ -110,6 +104,11 @@
 	}
 
 	&.Recipe {
+		padding-bottom:50px;
+
+		.Search {
+			position:inherit;
+		}
 
 		form {
 			padding:10px;

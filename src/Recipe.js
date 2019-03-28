@@ -192,7 +192,8 @@ class Recipe extends Component {
 										<div>
 											<Search
 												filterByIngredient={this.addIngredient}
-												ingredients={data.ingredients} />
+												ingredients={data.ingredients}
+												allowNew={true} />
 											{ingredientsList}
 										</div>
 									)

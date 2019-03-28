@@ -1,30 +1,52 @@
 import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
 import _ from 'lodash';
 
 import '../App.scss';
+
+//Queries
+import { ADD_INGREDIENT } from '../clients/Ingredient';
 
 class Search extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
+			allowNew:  this.props.allowNew  ? true : false,
 			autoFocus: this.props.autoFocus ? true : false,
-			value:   '',
-			suggests: []
+			value:     '',
+			suggests:  []
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 	}
 
 	handleChange = (event) => {
-		this.setState({
-			value: event.target.value,
+		//Suggestion based on available app ingredients (5 items maximum)
+		let exist    = false;
+		let value    = event.target.value;
+		let suggests = _.slice(_.filter(this.props.ingredients, (ingredient) => {
+			if (ingredient.name == value) exist = true;
+			return _.startsWith(ingredient.name, _.toLower(value));
+		}), 0, 5);
 
-			//Suggestion based on available app ingredients (5 items maximum)
-			suggests: _.slice(_.filter(this.props.ingredients, (ingredient) => {
-				return _.startsWith(ingredient.name, _.toLower(event.target.value));
-			}), 0, 5)
-		});
+		//Allow adding new ingredient
+		if (this.state.allowNew && !exist && value != "") {
+			suggests.unshift({
+				id:    0,
+				name:  _.toLower(value),
+				isNew: true,
+			});
+		}
+
+		if (value == "") {
+			this.clear();
+		} else {
+			this.setState({
+				value,
+				suggests
+			});
+		}
 	}
 
 	clear = () => {
@@ -44,12 +66,29 @@ class Search extends Component {
 
 	render() {
 		const suggests = this.state.suggests.map((suggest) => {
+			if (!suggest.isNew)
+				return (
+					<li
+						key={`s_${suggest.id}`}
+						onClick={() => this.addToFilter(suggest)}>
+						{suggest.name}
+					</li>
+				);
+
 			return (
-				<li
-					key={`s_${suggest.id}`}
-					onClick={() => this.addToFilter(suggest)}>{suggest.name}
-				</li>
-			);
+				<Mutation
+					mutation={ADD_INGREDIENT}
+					variables={{ name : suggest.name }}
+					onCompleted={({addIngredient}) => this.addToFilter(addIngredient)}>
+					{addIngredient => (
+						<li
+							key={`s_${suggest.id}`}
+							onClick={addIngredient}>
+							(+) {suggest.name}..
+						</li>
+					)}
+				</Mutation>
+			)
 		});
 
 		return (
