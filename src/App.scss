@@ -21,25 +21,40 @@
 	}
 
 	.Filter {
-		list-style-type: none;
-		padding:10px;
-		margin:10px;
 
-		li {
-			display: inline-block;
-			padding:5px;
-			margin-right: 10px;
-			min-width: 100px;
+		.input-range {
+			width:90%;
+			margin:auto;
+			margin-top:30px;
+			margin-bottom:30px;
 
-			border-radius: 40px;
-			background-color:lightcoral;
-			border:1px solid red;
+			.input-range__label--min,
+			.input-range__label--max {
+				display:none;
+			}
+		}
 
-			&:before {
-				content: 'x';
-				color:black;
-				font-weight: 300;
-				margin-right:10px;
+		ul {
+			list-style-type: none;
+			padding:10px;
+
+			li {
+				display: inline-block;
+				padding:5px;
+				margin-top:5px;
+				margin-right: 10px;
+				min-width: 85px;
+
+				border-radius: 40px;
+				background-color:lightcoral;
+				border:1px solid red;
+
+				&:before {
+					content: 'x';
+					color:black;
+					font-weight: 300;
+					margin-right:10px;
+				}
 			}
 		}
 	}

@@ -184,7 +184,7 @@ class Recipe extends Component {
 						variables={{ id: this.state.id }}
 						onCompleted={() => this.redirectToHome() }>
 							{deleteRecipe => (
-								<button onClick={deleteRecipe}>Delete</button>
+								<button onClick={deleteRecipe}>DELETE</button>
 							)}
 					</Mutation>
 				) : (
@@ -193,7 +193,7 @@ class Recipe extends Component {
 						variables={this.state}
 						onCompleted={() => this.redirectToHome() }>
 							{addRecipe => (
-								<button onClick={addRecipe}>Add</button>
+								<button onClick={addRecipe}>ADD (+)</button>
 							)}
 					</Mutation>
 				)}

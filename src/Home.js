@@ -20,30 +20,48 @@ class Home extends Component {
     super(props);
     this.state = {
       cookbook: this.props.cookbook,
-      cookbookFiltered: this.props.cookbook,
-      filter: [],
+      cookbookFiltered: _.slice(this.props.cookbook, 0, 20),
+      filters: [],
     };
   }
 
   addFilter = (ingredient) => {
     this.setState(prevState => ({
-        filter: [...prevState.filter, ingredient]
-    }), () => this.applyFilter());
+        filters: [...prevState.filters, ingredient]
+    }), () => this.updateFilter());
   }
 
   removeFilter = (ingredient) => {
     this.setState(prevState => ({
-      filter: _.filter(prevState.filter, (filter) => {
+      filters: _.filter(prevState.filters, (filter) => {
         return filter !== ingredient
       })
-    }), () => this.applyFilter());
+    }), () => this.updateFilter());
   }
 
-  applyFilter = () => {
-    //Filter recipes with selected ingredients
+  updateFilter = (times) => {
     this.setState({
       cookbookFiltered: _.filter(this.state.cookbook, (recipe) => {
-        return _.difference(_.map(this.state.filter, 'id'), _.map(recipe.ingredients, 'idIngredient')).length === 0
+        if (times) {
+          //Filter cooking time duration in minutes
+          if (times.cookingtime) {
+            if (
+              recipe.cookingtime > times.cookingtime.max ||
+              recipe.cookingtime < times.cookingtime.min
+            ) return false;
+          }
+
+          //Filter work time duration in minutes
+          if (times.worktime) {
+            if (
+              recipe.worktime > times.worktime.max ||
+              recipe.worktime < times.worktime.min
+            ) return false;
+          }
+        }
+
+        //Filter recipes with selected ingredients
+        return _.difference(_.map(this.state.filters, 'id'), _.map(recipe.ingredients, 'idIngredient')).length === 0
       })
     })
   }
@@ -59,7 +77,7 @@ class Home extends Component {
           }}
         </Query>
         <hr />
-        <Filter removeFilter={this.removeFilter} filters={this.state.filter} />
+        <Filter updateFilter={this.updateFilter} removeFilter={this.removeFilter} filters={this.state.filters} />
         <hr />
         <Results items={this.state.cookbookFiltered} />
 

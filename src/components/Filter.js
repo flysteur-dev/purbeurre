@@ -1,11 +1,29 @@
 import React, { Component } from 'react';
+import InputRange from 'react-input-range';
 
 import '../App.scss';
+import 'react-input-range/lib/css/index.css';
 
 class Filter extends Component {
 
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			//Default
+			cookingtime: { min: 0, max: 120 },
+			worktime:    { min: 0, max: 120 }
+		};
+	}
+
 	remove = (suggest) => {
 		this.props.removeFilter(suggest);
+	}
+
+	update = (time) => {
+		this.setState(time, () => {
+			this.props.updateFilter(this.state);
+		});
 	}
 
 	filters = (props) => {
@@ -16,9 +34,25 @@ class Filter extends Component {
 
 	render() {
 		return (
-			<ul className="Filter">
-				{this.filters(this.props)}
-			</ul>
+			<div className="Filter">
+				<InputRange
+					maxValue={120}
+					minValue={0}
+					formatLabel={value => `${value}`}
+					value={this.state.cookingtime}
+					onChange={cookingtime => this.update({ cookingtime })} />
+
+				<InputRange
+					maxValue={120}
+					minValue={0}
+					formatLabel={value => `${value}`}
+					value={this.state.worktime}
+					onChange={worktime => this.update({ worktime })} />
+
+				<ul>
+					{this.filters(this.props)}
+				</ul>
+			</div>
 		);
 	}
 }
