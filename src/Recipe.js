@@ -21,9 +21,14 @@ class Recipe extends Component {
 			this.state = { ...this.props.recipe };
 		} else {
 			this.state = {
-				id:    null,
+				id: null,
 				title: '',
-				desc:  '',
+				book: '',
+				page: '',
+				people: '',
+				cookingtime: '',
+				worktime: '',
+				description: '',
 				ingredients: []
 			}
 		}
@@ -73,7 +78,7 @@ class Recipe extends Component {
 	render() {
 		let n = 0;
 		let ingredients = this.state.ingredients.map((ingredient) => {
-			let row  = n; n++;
+			let row = n; n++;
 			return (
 				<div className="row" key={row}>
 					<input
@@ -81,6 +86,7 @@ class Recipe extends Component {
 						type="text"
 						value={ingredient.name} />
 					<input
+						autoFocus
 						data-pos={row}
 						type="text"
 						onChange={this.handleInputQuantityChange}
@@ -92,7 +98,6 @@ class Recipe extends Component {
 			)
 		});
 
-
 		return (
 			<div className="App Recipe">
 				<Link to="/"><div className="close">&times;</div></Link>
@@ -103,18 +108,64 @@ class Recipe extends Component {
 						name="title"
 						type="text"
 						value={this.state.title}
+						placeholder="Recipe title"
 						onChange={this.handleInputChange} />
-					</label><br />
+					</label>
+
+					<label>Book
+					<div className="flex">
+						<input
+							name="book"
+							type="text"
+							value={this.state.book}
+							placeholder="Book reference"
+							onChange={this.handleInputChange} />
+						<input
+							name="page"
+							type="number"
+							value={this.state.page}
+							placeholder="Page"
+							style={{width:'40px'}}
+							onChange={this.handleInputChange} />
+					</div>
+					</label>
+
+					<label>Peoples
+					<input
+						name="people"
+						type="number"
+						value={this.state.people}
+						placeholder="1..15"
+						onChange={this.handleInputChange} />
+					</label>
+
+					<label>Duration
+					<div className="flex">
+						<input
+							name="worktime"
+							type="number"
+							value={this.state.worktime}
+							placeholder="Work (mn)"
+							onChange={this.handleInputChange} />
+						<input
+							name="cookingtime"
+							type="number"
+							value={this.state.cookingtime}
+							placeholder="Cooking (mn)"
+							onChange={this.handleInputChange} />
+					</div>
+					</label>
 
 					<label>Description
 					<input
-						name="desc"
+						name="description"
 						type="text"
-						value={this.state.desc}
+						value={this.state.description}
+						placeholder="(Optional)"
 						onChange={this.handleInputChange} />
-					</label><br />
+					</label>
 
-					<label>Ingredients</label>
+					<label>Ingredients list</label>
 					<Query query={GET_INGREDIENTS}>
 						{({ data }) => {
 							return (

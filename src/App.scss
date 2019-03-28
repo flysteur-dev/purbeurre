@@ -85,7 +85,17 @@
 
 		form {
 			padding:10px;
-			margin-top:50px;
+			margin-top:10px;
+
+			label {
+				div {
+					display:flex;
+
+					> input {
+						margin-right: 2px;
+					}
+				}
+			}
 
 			input {
 				height:20px;

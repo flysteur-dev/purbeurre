@@ -11,7 +11,7 @@ class Results extends Component {
 				<Link key={`r_${item.id}`} to={`/recipe/${item.id}`}>
 					<li>
 						<div className="t">{item.title}</div>
-						<div className="i">{item.desc}</div>
+						<div className="i">{item.description}</div>
 					</li>
 				</Link>
 			)

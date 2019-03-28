@@ -21,7 +21,7 @@ class Search extends Component {
 
 			//Suggestion based on available app ingredients (5 items maximum)
 			suggests: _.slice(_.filter(this.props.ingredients, (ingredient) => {
-				return _.startsWith(ingredient.name, _.lowerCase(event.target.value));
+				return _.startsWith(ingredient.name, _.toLower(event.target.value));
 			}), 0, 5)
 		});
 	}
@@ -43,7 +43,12 @@ class Search extends Component {
 
 	render() {
 		const suggests = this.state.suggests.map((suggest) => {
-			return <li key={`s_${suggest.id}`} onClick={() => this.addToFilter(suggest)}>{suggest.name}</li>
+			return (
+				<li
+					key={`s_${suggest.id}`}
+					onClick={() => this.addToFilter(suggest)}>{suggest.name}
+				</li>
+			);
 		});
 
 		return (
@@ -53,6 +58,7 @@ class Search extends Component {
 					autoFocus={true}
 					value={this.state.value}
 					onChange={this.handleChange}
+					placeholder="Search ingredients.."
 				/>
 				<ul className="Suggests">{suggests}</ul>
 			</div>

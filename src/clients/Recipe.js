@@ -10,7 +10,12 @@ export const GET_RECIPES = gql`
 	cookbook @client {
 		id,
 		title,
-		desc,
+		book,
+		page,
+		people,
+		cookingtime,
+		worktime,
+		description,
 		ingredients {
 			idIngredient,
 			name,
@@ -25,7 +30,12 @@ export const GET_RECIPE = gql`
 		getRecipe(id: $id) @client {
 			id,
 			title,
-			desc,
+			book,
+			page,
+			people,
+			cookingtime,
+			worktime,
+			description,
 			ingredients {
 				idIngredient,
 				name,
@@ -36,8 +46,8 @@ export const GET_RECIPE = gql`
 `;
 
 export const ADD_RECIPE = gql`
-	mutation addRecipe($title: String!, $desc: String!, $ingredients: [Int]) {
-		addRecipe(title: $title, desc: $desc, ingredients: $ingredients) @client
+	mutation addRecipe($title: String!, $book: String!, $page: Int!, $people: Int!, $cookingtime: Int!, $worktime: Int!, $description: String!, $ingredients: [RecipeIngredient]) {
+		addRecipe(title: $title, book: $book, page: $page, people: $people, cookingtime: $cookingtime, worktime: $worktime, description: $description, ingredients: $ingredients) @client
 	}
 `;
 
@@ -64,14 +74,19 @@ export const resolvers = {
 		//Add recipe
 		//Input: title, description, ingredients list
 		//Output: Created recipe
-		addRecipe(__, { title, desc, ingredients }, { cache }) {
+		addRecipe(__, { title, book, page, people, cookingtime, worktime, description, ingredients }, { cache }) {
 			const previous = cache.readQuery({ query: GET_RECIPES });
 			const newRecipe = {
 				__typename: RECIPE_TYPE,
 				id: (previous.cookbook.length) ? _.maxBy(previous.cookbook, 'id').id + 1 : 1,
 				title,
-				desc,
-				ingredients
+				book,
+				page,
+				people,
+				cookingtime,
+				worktime,
+				description,
+				ingredients,
 			};
 			const data = {
 				cookbook: [...previous.cookbook, newRecipe],
