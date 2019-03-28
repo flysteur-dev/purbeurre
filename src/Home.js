@@ -72,11 +72,13 @@ class Home extends Component {
         <Query query={GET_INGREDIENTS}>
           {({ data }) => {
             return (
-              <Search filterByIngredient={this.addFilter} ingredients={data.ingredients} />
+              <Search
+                filterByIngredient={this.addFilter}
+                ingredients={data.ingredients}
+                autoFocus={true} />
             )
           }}
         </Query>
-        <hr />
         <Filter updateFilter={this.updateFilter} removeFilter={this.removeFilter} filters={this.state.filters} />
         <hr />
         <Results items={this.state.cookbookFiltered} />

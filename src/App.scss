@@ -1,6 +1,16 @@
 .App {
 
+	&.Recipe {
+		.Search {
+			position:inherit;
+		}
+	}
+
 	.Search {
+		position:fixed;
+		width:100%;
+		z-index:99;
+
 		input {
 			height:50px;
 			width:99%;
@@ -22,6 +32,9 @@
 
 	.Filter {
 
+		overflow:auto;
+		padding-top:60px;
+
 		.input-range {
 			width:90%;
 			margin:auto;
@@ -35,8 +48,8 @@
 		}
 
 		ul {
+			padding-left: 10px;
 			list-style-type: none;
-			padding:10px;
 
 			li {
 				display: inline-block;
@@ -131,7 +144,7 @@
 				label {
 					width: 60px;
 					text-align: center;
-					font-size: 30px;
+					font-size: 20px;
 				}
 			}
 		}

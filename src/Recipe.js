@@ -76,8 +76,15 @@ class Recipe extends Component {
 	}
 
 	render() {
+		let params = { };
+
+		//Readonly mode
+		if (this.state.id) {
+			params = { readOnly: 'readOnly' };
+		}
+
 		let n = 0;
-		let ingredients = this.state.ingredients.map((ingredient) => {
+		let ingredientsList = this.state.ingredients.map((ingredient) => {
 			let row = n; n++;
 			return (
 				<div className="row" key={row}>
@@ -86,9 +93,11 @@ class Recipe extends Component {
 						type="text"
 						value={ingredient.name} />
 					<input
+						{...params}
 						autoFocus
 						data-pos={row}
 						type="text"
+						placeholder="Quantity"
 						onChange={this.handleInputQuantityChange}
 						value={ingredient.qtx} />
 
@@ -105,22 +114,26 @@ class Recipe extends Component {
 				<form>
 					<label>Title
 					<input
+						{...params}
 						name="title"
 						type="text"
 						value={this.state.title}
 						placeholder="Recipe title"
+						autoFocus={true}
 						onChange={this.handleInputChange} />
 					</label>
 
 					<label>Book
 					<div className="flex">
 						<input
+							{...params}
 							name="book"
 							type="text"
 							value={this.state.book}
 							placeholder="Book reference"
 							onChange={this.handleInputChange} />
 						<input
+							{...params}
 							name="page"
 							type="number"
 							value={this.state.page}
@@ -132,6 +145,7 @@ class Recipe extends Component {
 
 					<label>Peoples
 					<input
+						{...params}
 						name="people"
 						type="number"
 						value={this.state.people}
@@ -142,12 +156,14 @@ class Recipe extends Component {
 					<label>Duration
 					<div className="flex">
 						<input
+							{...params}
 							name="worktime"
 							type="number"
 							value={this.state.worktime}
 							placeholder="Work (mn)"
 							onChange={this.handleInputChange} />
 						<input
+							{...params}
 							name="cookingtime"
 							type="number"
 							value={this.state.cookingtime}
@@ -158,6 +174,7 @@ class Recipe extends Component {
 
 					<label>Description
 					<input
+						{...params}
 						name="description"
 						type="text"
 						value={this.state.description}
@@ -165,17 +182,29 @@ class Recipe extends Component {
 						onChange={this.handleInputChange} />
 					</label>
 
-					<label>Ingredients list</label>
-					<Query query={GET_INGREDIENTS}>
-						{({ data }) => {
-							return (
-								<div>
-									<Search filterByIngredient={this.addIngredient} ingredients={data.ingredients} />
-									{ingredients}
-								</div>
-							)
-						}}
-					</Query>
+
+					{ !this.state.id  ? (
+						<div>
+							<label>Ingredients list</label>
+							<Query query={GET_INGREDIENTS}>
+								{({ data }) => {
+									return (
+										<div>
+											<Search
+												filterByIngredient={this.addIngredient}
+												ingredients={data.ingredients} />
+											{ingredientsList}
+										</div>
+									)
+								}}
+							</Query>
+						</div>
+					) : (
+						<div>
+							<hr />
+							{ ingredientsList }
+						</div>
+					) }
 				</form>
 
 				{ this.state.id ? (

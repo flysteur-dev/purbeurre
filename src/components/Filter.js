@@ -10,7 +10,7 @@ class Filter extends Component {
 		super(props);
 
 		this.state = {
-			//Default
+			//Default (in minutes)
 			cookingtime: { min: 0, max: 120 },
 			worktime:    { min: 0, max: 120 }
 		};
@@ -39,15 +39,15 @@ class Filter extends Component {
 					maxValue={120}
 					minValue={0}
 					formatLabel={value => `${value}`}
-					value={this.state.cookingtime}
-					onChange={cookingtime => this.update({ cookingtime })} />
+					value={this.state.worktime}
+					onChange={worktime => this.update({ worktime })} />
 
 				<InputRange
 					maxValue={120}
 					minValue={0}
 					formatLabel={value => `${value}`}
-					value={this.state.worktime}
-					onChange={worktime => this.update({ worktime })} />
+					value={this.state.cookingtime}
+					onChange={cookingtime => this.update({ cookingtime })} />
 
 				<ul>
 					{this.filters(this.props)}

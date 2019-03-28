@@ -8,6 +8,7 @@ class Search extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			autoFocus: this.props.autoFocus ? true : false,
 			value:   '',
 			suggests: []
 		};
@@ -55,7 +56,7 @@ class Search extends Component {
 			<div className="Search">
 				<input
 					ref={c => (this._input = c)}
-					autoFocus={true}
+					autoFocus={this.state.autoFocus}
 					value={this.state.value}
 					onChange={this.handleChange}
 					placeholder="Search ingredients.."
