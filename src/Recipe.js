@@ -160,7 +160,7 @@ class Recipe extends Component {
 							name="worktime"
 							type="number"
 							value={this.state.worktime}
-							placeholder="Work (mn)"
+							placeholder="Working (mn)"
 							onChange={this.handleInputChange} />
 						<input
 							{...params}
@@ -223,7 +223,7 @@ class Recipe extends Component {
 						variables={this.state}
 						onCompleted={() => this.redirectToHome() }>
 							{addRecipe => (
-								<div className="Button" onClick={addRecipe}>	&#10004;</div>
+								<div className="Button" onClick={addRecipe}>&#10004;</div>
 							)}
 					</Mutation>
 				)}
