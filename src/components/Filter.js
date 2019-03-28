@@ -35,6 +35,7 @@ class Filter extends Component {
 	render() {
 		return (
 			<div className="Filter">
+				<p className="label">working time (mn)</p>
 				<InputRange
 					maxValue={120}
 					minValue={0}
@@ -42,6 +43,7 @@ class Filter extends Component {
 					value={this.state.worktime}
 					onChange={worktime => this.update({ worktime })} />
 
+				<p className="label">cooking time (mn)</p>
 				<InputRange
 					maxValue={120}
 					minValue={0}
@@ -52,6 +54,8 @@ class Filter extends Component {
 				<ul>
 					{this.filters(this.props)}
 				</ul>
+
+				<p className="clear">&times; Clear filter</p>
 			</div>
 		);
 	}

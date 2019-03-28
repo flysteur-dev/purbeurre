@@ -81,9 +81,9 @@ class Home extends Component {
         </Query>
         <Filter updateFilter={this.updateFilter} removeFilter={this.removeFilter} filters={this.state.filters} />
         <hr />
-        <Results items={this.state.cookbookFiltered} />
+        <Results items={this.state.cookbookFiltered} filters={this.state.filters} />
 
-        <div className="AddButton"><Link to="/add">+</Link></div>
+        <div className="Button"><Link to="/add">+</Link></div>
       </div>
     );
   }

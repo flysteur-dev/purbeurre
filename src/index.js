@@ -1,6 +1,6 @@
-import { merge } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { merge } from 'lodash';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { ApolloProvider, Query } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
@@ -28,7 +28,6 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 	//Initialize state
 	if (!window.localStorage.getItem('apollo-cache-persist')) {
 		console.warn("Cache is empty, applying initial state.");
-		//Sample
 		cache.writeData({
 			data: {
 				//List of all available ingredients

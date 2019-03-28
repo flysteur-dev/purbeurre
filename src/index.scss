@@ -6,8 +6,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f8f8;
 }
 
 a    { text-decoration: none; color:black;}
 code { font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace; }
-hr   { margin:0px; }
+hr   { margin:0px; border:1px solid #f5f4f9; }

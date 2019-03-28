@@ -1,3 +1,9 @@
+$color-background: #f5f4f9;
+$color-main: #4f5ffc;
+$color-secondary: #edeffe;
+$color-warning: #ff517c;
+$color-text:#656b77;
+
 .App {
 
 	.Search {
@@ -7,19 +13,23 @@
 
 		input {
 			height:50px;
-			width:99%;
+			width:100%;
+			text-indent: 10px;
+			border:0px;
+			border-top:5px solid $color-main;
+			border-bottom:2px solid $color-background;
 		}
 
 		.Suggests {
 			margin:0px;
 			padding:0px;
 			list-style-type: none;
-			border:1px solid gray;
 
 			li {
-				padding:5px;
-				background-color:ghostwhite;
-				border-top:1px solid gray;
+				padding:8px;
+				background-color: $color-main;
+				border-bottom:1px solid white;
+				color:white;
 			}
 		}
 	}
@@ -27,42 +37,83 @@
 	.Filter {
 
 		overflow:auto;
+		padding:10px;
 		padding-top:60px;
 
 		.input-range {
 			width:90%;
 			margin:auto;
-			margin-top:30px;
-			margin-bottom:30px;
+			margin-top:15px;
+			margin-bottom:15px;
 
 			.input-range__label--min,
 			.input-range__label--max {
 				display:none;
 			}
+
+			.input-range__track--active {
+				background-color:$color-main;
+			}
+
+			.input-range__track--active {
+				color: $color-main;
+			}
+
+			.input-range__slider {
+				background-color:white;
+			}
+
+			.input-range__label {
+				color:$color-text;
+				font-size:10px;
+			}
 		}
 
 		ul {
+			margin-top: 20px;
 			padding-left: 10px;
 			list-style-type: none;
 
 			li {
 				display: inline-block;
 				padding:5px;
-				margin-top:5px;
+				margin-top:10px;
 				margin-right: 10px;
 				min-width: 85px;
 
 				border-radius: 40px;
-				background-color:lightcoral;
-				border:1px solid red;
+				background-color:$color-secondary;
+				color:$color-main;
+				border:1px solid $color-main;
+				font-weight: bold;
+				font-size: 13px;
+				text-align: center;
 
 				&:before {
 					content: 'x';
-					color:black;
+					color:$color-main;
 					font-weight: 300;
 					margin-right:10px;
 				}
 			}
+		}
+
+		p.label {
+			position:relative;
+			top:45px;
+			text-align: center;
+			color:$color-text;
+			font-size: 11px;
+			padding:0px;
+			margin:0px;
+		}
+
+		.clear {
+			margin:0;
+			color:$color-warning;
+			font-size: 12px;
+			text-align: right;
+			display:none;
 		}
 	}
 
@@ -70,20 +121,50 @@
 		list-style-type: none;
 		padding:0px;
 		margin:0px;
+		width:96%;
+		margin:auto;
+		padding-bottom:10px;
 
 		li {
-			min-height: 100px;
-			background-color:rgba(32, 178, 171, 0.39);
-			border-bottom: 1px solid darkcyan;
+			display:flex;
+			flex-direction: column;
 
-			.t {
+			height: 112px;
+			background-color:white;
+			border-radius: 10px;
+			margin-top:10px;
+			padding:10px;
+			color:$color-text;
+			border:1px solid #e1e1e1;
+			font-size:12px;
+
+			.title {
+				font-size:13px;
 				font-weight: bold;
 				margin-bottom: 5px;
+				color:$color-main;
+			}
+
+			.book {
+				text-align: right;
+			}
+
+			.desc {
+				flex-grow: 1;
+				margin-top:8px;
+				margin-bottom:8px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.items {
+				font-size:10px;
+				align-self:flex-end;
 			}
 		}
 	}
 
-	.AddButton {
+	.Button {
 		position:fixed;
 		bottom:20px;
 		right:20px;
@@ -94,41 +175,66 @@
 
 		width:50px;
 		height:50px;
-		background-color:blueviolet;
+		background-color:$color-main;
 		border-radius: 50%;
+		font-weight:bold;
 
 		a {
 			color:white;
-			font-size: 20px;
+			font-size: 25px;
+		}
+
+		&.delete {
+			font-size:10px;
+			background-image:none;
+			background-color:$color-warning !important;
 		}
 	}
 
 	&.Recipe {
-		padding-bottom:50px;
+		padding-bottom:10px;
+		color:white;
+
+		.close {
+			position:fixed;
+			width:100%;
+			text-align: center;
+			font-size:30px;
+			color:white;
+			background-color:$color-main;
+			border-bottom:2px solid $color-background;
+		}
 
 		.Search {
 			position:inherit;
+			border-bottom:2px solid $color-background;
 		}
 
 		form {
 			padding:10px;
-			margin-top:10px;
+			padding-top:60px;
 
 			label {
+				color:$color-main;
+				font-weight: bold;
+				font-size: 14px;
+
 				div {
 					display:flex;
-
-					> input {
-						margin-right: 2px;
-					}
+					> input { margin-right: 2px; }
 				}
 			}
 
 			input {
-				height:20px;
+				height:30px;
 				width:100%;
 				margin-top:5px;
 				margin-bottom:10px;
+				text-indent: 5px;
+				border:0;
+				border-radius: 10px;
+				color:$color-text;
+				border:1px solid $color-background;
 			}
 
 			.row {
@@ -138,32 +244,16 @@
 
 				input {
 					margin:0;
+					margin-right:5px;
 				}
 
 				label {
 					width: 60px;
 					text-align: center;
 					font-size: 20px;
+					color:$color-warning;
 				}
 			}
-		}
-
-		button {
-			position:fixed;
-			bottom:0;
-			width:100%;
-			height:40px;
-
-			background-color:blueviolet;
-			color:white;
-			font-weight: bold;
-			border:0;
-		}
-
-		.close {
-			text-align: right;
-			margin-right:10px;
-			font-size:30px;
 		}
 	}
 }
