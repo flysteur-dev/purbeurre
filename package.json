@@ -14,7 +14,6 @@
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
     "lodash": "^4.17.11",
-    "node-sass": "^4.11.0",
     "react": "^16.8.4",
     "react-apollo": "^2.5.2",
     "react-dom": "^16.8.4",
@@ -25,8 +24,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test":  "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,5 +36,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "node-sass": "^4.11.0",
+    "gh-pages": "^2.0.1"
+  }
 }
