@@ -188,6 +188,10 @@ $color-text:#656b77;
 			background-image:none;
 			background-color:$color-warning !important;
 		}
+
+		&.add {
+			font-size:10px;
+		}
 	}
 
 	&.Recipe {

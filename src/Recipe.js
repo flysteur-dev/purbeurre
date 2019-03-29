@@ -226,7 +226,7 @@ class Recipe extends Component {
 						variables={this.state}
 						onCompleted={() => this.redirectToHome() }>
 							{addRecipe => (
-								<div className="Button" onClick={addRecipe}>&#x2714;</div>
+								<div className="Button add" onClick={addRecipe}>ADD</div>
 							)}
 					</Mutation>
 				)}
