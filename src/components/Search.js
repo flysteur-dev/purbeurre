@@ -21,6 +21,16 @@ class Search extends Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
+	handleValidate = (event) => {
+		//Handle validate action and add the first suggest
+		if (event.key == 'Enter') {
+			let current = _.head(this.state.suggests);
+			if (current && !current.isNew) {
+				this.addToFilter(_.head(this.state.suggests));
+			}
+		}
+	}
+
 	handleChange = (event) => {
 		//Suggestion based on available app ingredients (5 items maximum)
 		let exist    = false;
@@ -98,6 +108,7 @@ class Search extends Component {
 					autoFocus={this.state.autoFocus}
 					value={this.state.value}
 					onChange={this.handleChange}
+					onKeyPress={this.handleValidate}
 					placeholder="Search ingredients.."
 				/>
 				<ul className="Suggests">{suggests}</ul>
