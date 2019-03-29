@@ -24,7 +24,7 @@ class Search extends Component {
 	componentDidUpdate() {
 		if (this.state.allowNew) {
 			//Scroll to the end of the suggests list
-			window.scrollTo(0, this.suggestsEnd.scrollHeight);
+			document.getElementById('SuggestsListEnd').scrollIntoView();
 		}
 	}
 
@@ -118,9 +118,8 @@ class Search extends Component {
 					onKeyPress={this.handleValidate}
 					placeholder="Search ingredients.."
 				/>
-				<ul className="Suggests" ref={(div) => {
-					this.suggestsEnd = div;
-				}}>{suggests}</ul>
+				<ul className="Suggests">{suggests}</ul>
+				<div id="SuggestsListEnd"></div>
 			</div>
 		);
 	}
