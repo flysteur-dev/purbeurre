@@ -22,7 +22,7 @@ class Search extends Component {
 	}
 
 	componentDidUpdate() {
-		if (this.state.allowNew) {
+		if (this.state.allowNew && this.state.suggests.length) {
 			//Scroll to the end of the suggests list
 			document.getElementById('SuggestsListEnd').scrollIntoView();
 		}
