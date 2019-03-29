@@ -1,15 +1,15 @@
 {
-  "main.css": "/purbeurre/static/css/main.a95455ef.chunk.css",
-  "main.js": "/purbeurre/static/js/main.cde8ce16.chunk.js",
-  "main.js.map": "/purbeurre/static/js/main.cde8ce16.chunk.js.map",
+  "main.css": "/purbeurre/static/css/main.4b83a9b5.chunk.css",
+  "main.js": "/purbeurre/static/js/main.1d7effe3.chunk.js",
+  "main.js.map": "/purbeurre/static/js/main.1d7effe3.chunk.js.map",
   "runtime~main.js": "/purbeurre/static/js/runtime~main.4a592724.js",
   "runtime~main.js.map": "/purbeurre/static/js/runtime~main.4a592724.js.map",
   "static/css/2.159b4675.chunk.css": "/purbeurre/static/css/2.159b4675.chunk.css",
   "static/js/2.8ed3e6c7.chunk.js": "/purbeurre/static/js/2.8ed3e6c7.chunk.js",
   "static/js/2.8ed3e6c7.chunk.js.map": "/purbeurre/static/js/2.8ed3e6c7.chunk.js.map",
   "index.html": "/purbeurre/index.html",
-  "precache-manifest.d7b398b8fb706c24f29c03d64dcde76a.js": "/purbeurre/precache-manifest.d7b398b8fb706c24f29c03d64dcde76a.js",
+  "precache-manifest.6e295b4a66612295fad7963b80986744.js": "/purbeurre/precache-manifest.6e295b4a66612295fad7963b80986744.js",
   "service-worker.js": "/purbeurre/service-worker.js",
   "static/css/2.159b4675.chunk.css.map": "/purbeurre/static/css/2.159b4675.chunk.css.map",
-  "static/css/main.a95455ef.chunk.css.map": "/purbeurre/static/css/main.a95455ef.chunk.css.map"
+  "static/css/main.4b83a9b5.chunk.css.map": "/purbeurre/static/css/main.4b83a9b5.chunk.css.map"
 }
