@@ -21,6 +21,13 @@ class Search extends Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
+	componentDidUpdate() {
+		if (this.state.allowNew) {
+			//Scroll to the end of the suggests list
+			window.scrollTo(0, this.suggestsEnd.scrollHeight);
+		}
+	}
+
 	handleValidate = (event) => {
 		//Handle validate action and add the first suggest
 		if (event.key == 'Enter') {
@@ -111,7 +118,9 @@ class Search extends Component {
 					onKeyPress={this.handleValidate}
 					placeholder="Search ingredients.."
 				/>
-				<ul className="Suggests">{suggests}</ul>
+				<ul className="Suggests" ref={(div) => {
+					this.suggestsEnd = div;
+				}}>{suggests}</ul>
 			</div>
 		);
 	}
