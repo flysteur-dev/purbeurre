@@ -34,6 +34,10 @@ class Recipe extends Component {
 		}
 	}
 
+	componentDidMount() {
+		window.scrollTo(0, 0);
+	}
+
 	handleInputChange = (event) => {
 		const target = event.target;
 		const value  = target.value;
@@ -119,7 +123,6 @@ class Recipe extends Component {
 						type="text"
 						value={this.state.title}
 						placeholder="Recipe title"
-						autoFocus={true}
 						onChange={this.handleInputChange} />
 					</label>
 
@@ -160,7 +163,7 @@ class Recipe extends Component {
 							name="worktime"
 							type="number"
 							value={this.state.worktime}
-							placeholder="Working (mn)"
+							placeholder="Prep (mn)"
 							onChange={this.handleInputChange} />
 						<input
 							{...params}
@@ -223,7 +226,7 @@ class Recipe extends Component {
 						variables={this.state}
 						onCompleted={() => this.redirectToHome() }>
 							{addRecipe => (
-								<div className="Button" onClick={addRecipe}>&#10004;</div>
+								<div className="Button" onClick={addRecipe}>&#x2714;</div>
 							)}
 					</Mutation>
 				)}

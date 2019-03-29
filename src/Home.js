@@ -25,6 +25,10 @@ class Home extends Component {
     };
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   addFilter = (ingredient) => {
     this.setState(prevState => ({
         filters: [...prevState.filters, ingredient]
@@ -75,7 +79,7 @@ class Home extends Component {
               <Search
                 filterByIngredient={this.addFilter}
                 ingredients={data.ingredients}
-                autoFocus={true} />
+                autoFocus={false} />
             )
           }}
         </Query>
@@ -83,7 +87,7 @@ class Home extends Component {
         <hr />
         <Results items={this.state.cookbookFiltered} filters={this.state.filters} />
 
-        <div className="Button"><Link to="/add">+</Link></div>
+        <Link to="/add"><div className="Button">+</div></Link>
       </div>
     );
   }

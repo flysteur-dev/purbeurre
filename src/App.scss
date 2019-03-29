@@ -123,7 +123,7 @@ $color-text:#656b77;
 		margin:0px;
 		width:96%;
 		margin:auto;
-		padding-bottom:10px;
+		padding-bottom:80px;
 
 		li {
 			display:flex;
@@ -179,10 +179,9 @@ $color-text:#656b77;
 		border-radius: 50%;
 		font-weight:bold;
 
-		a {
-			color:white;
-			font-size: 25px;
-		}
+		color:white;
+		font-size: 25px;
+		cursor:pointer;
 
 		&.delete {
 			font-size:10px;
@@ -192,7 +191,7 @@ $color-text:#656b77;
 	}
 
 	&.Recipe {
-		padding-bottom:10px;
+		padding-bottom:80px;
 		color:white;
 
 		.close {
