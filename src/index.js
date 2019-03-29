@@ -54,7 +54,7 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 					if (error)   return <span>Oops..</span>
 
 					return (
-						<Router>
+						<Router basename={process.env.PUBLIC_URL}>
 							<div>
 								<Route exact path="/" render={(props) => <Home {...props} cookbook={data.cookbook} />} />
 								<Route exact path="/add" component={Recipe} />
