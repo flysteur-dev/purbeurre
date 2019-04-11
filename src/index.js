@@ -60,11 +60,11 @@ persistCache({ cache, storage: window.localStorage }).then(() => {
 								<Route exact path="/add" component={Recipe} />
 								<Route exact path="/recipe/:id" render={(r) =>
 									<Query query={GET_RECIPE} variables={{ id: r.match.params.id }}>
-										{({ loading, error, data: { getRecipe } }) => {
+										{({ loading, error, data }) => {
 											if (loading) return <span>loading...</span>
 											if (error)   return <span>Oops..</span>
 
-											return (<Recipe recipe={getRecipe} history={r.history} />);
+											return (<Recipe recipe={data.getRecipe} history={r.history} />);
 										}}
 									</Query>
 								 } />
