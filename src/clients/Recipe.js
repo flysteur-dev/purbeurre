@@ -75,6 +75,16 @@ export const resolvers = {
 		//Input: title, description, ingredients list
 		//Output: Created recipe
 		addRecipe(__, { title, book, page, people, cookingtime, worktime, description, ingredients }, { cache }) {
+			//Required
+			if (_.isEmpty(title)) { throw "Title field is required." }
+			if (_.isEmpty(ingredients)) { throw "Recipe must have at least one ingredient." }
+
+			//Must be a numeric value
+			if (!_.isEmpty(people) && !_.isNumber(people)) { throw "People must be a numeric value." }
+			if (!_.isEmpty(page) && !_.isNumber(page)) { throw "Page must be a numeric value."}
+			if (!_.isEmpty(cookingtime) && !_.isNumber(cookingtime)) { throw "Cooking duration must be a numeric value in minutes." }
+			if (!_.isEmpty(worktime) && !_.isNumber(worktime)) { throw "Cooking preparation must be a numeric value in minutes." }
+
 			const previous = cache.readQuery({ query: GET_RECIPES });
 			const newRecipe = {
 				__typename: RECIPE_TYPE,

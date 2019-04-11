@@ -194,6 +194,51 @@ $color-text:#656b77;
 		}
 	}
 
+	.Error {
+		position: fixed;
+		display:flex;
+
+		left:0;
+		bottom:0;
+
+		align-items: center;
+		flex-direction: column;
+
+		min-height:25%;
+		width:100%;
+
+		border-top:5px solid $color-warning;
+		background-color:white;
+
+		h1 {
+			color: white;
+			background-color: $color-warning;
+			width: 40px;
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
+			border-radius: 100%;
+		}
+
+		p {
+			font-size:15px;
+			color: $color-warning;
+			flex-grow: 1;
+			text-align: center;
+		}
+
+		button {
+			height:30px;
+			width:100%;
+			align-items: flex-end;
+
+			font-weight: bold;
+			color:white;
+			background-color: $color-warning;
+			border:0;
+		}
+	}
+
 	&.Recipe {
 		padding-bottom:80px;
 		color:white;

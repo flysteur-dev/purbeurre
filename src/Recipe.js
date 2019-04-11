@@ -4,6 +4,7 @@ import { Query, Mutation } from 'react-apollo';
 
 //Components
 import Search from './components/Search';
+import Error from './components/Error';
 
 //Styles
 import './App.scss';
@@ -116,7 +117,7 @@ class Recipe extends Component {
 				<Link to="/"><div className="close">&times;</div></Link>
 
 				<form>
-					<label>Title
+					<label>* Title
 					<input
 						{...params}
 						name="title"
@@ -152,7 +153,7 @@ class Recipe extends Component {
 						name="people"
 						type="number"
 						value={this.state.people}
-						placeholder="1..15"
+						placeholder="How many people?"
 						onChange={this.handleInputChange} />
 					</label>
 
@@ -188,7 +189,7 @@ class Recipe extends Component {
 
 					{ !this.state.id  ? (
 						<div>
-							<label>Ingredients list</label>
+							<label>* Ingredients list</label>
 							<Query query={GET_INGREDIENTS}>
 								{({ data }) => {
 									return (
@@ -225,9 +226,15 @@ class Recipe extends Component {
 						mutation={ADD_RECIPE}
 						variables={this.state}
 						onCompleted={() => this.redirectToHome() }>
-							{addRecipe => (
-								<div className="Button add" onClick={addRecipe}>ADD</div>
-							)}
+							{(addRecipe, { error }) => {
+
+								return (
+									<div className="Button add" onClick={addRecipe}>
+										ADD
+										{error ? (<Error error={error} />) : null}
+									</div>
+								)
+							}}
 					</Mutation>
 				)}
 			</div>
