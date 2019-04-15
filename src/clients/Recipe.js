@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 
 //Define
 export const RECIPE_TYPE = 'Recipe';
+export const RECIPE_INGREDIENT_TYPE = 'RecipeIngredient';
 
 //Queries
 export const GET_RECIPES = gql`
