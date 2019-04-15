@@ -58,7 +58,11 @@ open http://localhost:3000
 ```
 
 ## Changelog
-## [0.1.0] - 2019-03-29
+[0.2.0] - 2019-04-15
+- Recipe validation
+- Recipe tests
+
+[0.1.0] - 2019-03-29
 - Initial release
 
 ## Contributing
