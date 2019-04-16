@@ -81,10 +81,10 @@ export const resolvers = {
 			if (_.isEmpty(ingredients)) { throw "Recipe must have at least one ingredient." }
 
 			//Must be a numeric value
-			if (!_.isEmpty(people) && !_.isNumber(people)) { throw "People must be a numeric value." }
-			if (!_.isEmpty(page) && !_.isNumber(page)) { throw "Page must be a numeric value."}
-			if (!_.isEmpty(cookingtime) && !_.isNumber(cookingtime)) { throw "Cooking duration must be a numeric value in minutes." }
-			if (!_.isEmpty(worktime) && !_.isNumber(worktime)) { throw "Cooking preparation must be a numeric value in minutes." }
+			if (!_.isEmpty(people) && !_.isFinite(parseInt(people))) { throw "People must be a numeric value." }
+			if (!_.isEmpty(page) && !_.isFinite(parseInt(page))) { throw "Page must be a numeric value."}
+			if (!_.isEmpty(cookingtime) && !_.isFinite(parseInt(cookingtime))) { throw "Cooking duration must be a numeric value in minutes." }
+			if (!_.isEmpty(worktime) && !_.isFinite(parseInt(worktime))) { throw "Cooking preparation must be a numeric value in minutes." }
 
 			const previous = cache.readQuery({ query: GET_RECIPES });
 			const newRecipe = {
@@ -92,12 +92,12 @@ export const resolvers = {
 				id: (previous.cookbook.length) ? _.maxBy(previous.cookbook, 'id').id + 1 : 1,
 				title,
 				book,
-				page,
-				people,
-				cookingtime,
-				worktime,
 				description,
 				ingredients,
+				page: (page) ? parseInt(page) : null,
+				people: (people) ? parseInt(people) : null,
+				cookingtime: (cookingtime) ? parseInt(cookingtime) : null,
+				worktime: (worktime) ? parseInt(worktime) : null,
 			};
 			const data = {
 				cookbook: [...previous.cookbook, newRecipe],
